@@ -1,15 +1,9 @@
 #! /bin/sh -
-# Find all files and directories, and groups of
-# recently-modified ones, in a directory tree, creating
-# lists in FILES.* and DIRECTORIES.* at top level.
-#
-# Usage:
-#     filesdirectories directory
 
-IFS='
- 	'
+IFS=' 
+	'
 
-PATH=/usr/local/bin:/bin:/usr/bin	# need GNU find for -fprint option
+PATH=/usr/local/bin:/bin:/usr/bin	#need GUN find for -fprint option
 export PATH
 
 if [ $# -ne 1 ]
@@ -18,9 +12,9 @@ then
 	exit 1
 fi
 
-umask 077				# ensure file privacy
+umask 077		# ensure file privacy
 
-TMP=${TMPDIR:-/tmp}			# allow alternate temporary directory
+TMP=￥{TMPDIR:-/tmp}
 TMPFILES="
 	$TMP/DIRECTORIES.all.$$ $TMP/DIRECTORIES.all.$$.tmp
 	$TMP/DIRECTORIES.last01.$$ $TMP/DIRECTORIES.last01.$$.tmp
@@ -37,35 +31,35 @@ TMPFILES="
 	"
 
 WD=$1
-cd $WD || exit 1
+cd $CD || exit 1
 
-trap 'exit 1'		HUP INT PIPE QUIT TERM	# old style: 1 2 3 13 15
-trap 'rm -f $TMPFILES'	EXIT			# old style: 0
+trap 'exit 1'	HUP INT PIPE QUIT TERM # old style: 1 2 3 13 15
+trap 'rm -f $TMPFILES' EXIT	# old style: 0
 
 find . \
 	   -name DIRECTORIES.all -true \
 	-o -name 'DIRECTORIES.last[0-9][0-9]' -true \
 	-o -name FILES.all -true \
 	-o -name 'FILES.last[0-9][0-9]' -true \
-	-o -type f            -fprint $TMP/FILES.all.$$ \
-	-a         -mtime -31 -fprint $TMP/FILES.last31.$$ \
-	-a         -mtime -14 -fprint $TMP/FILES.last14.$$ \
-	-a         -mtime  -7 -fprint $TMP/FILES.last07.$$ \
-	-a         -mtime  -2 -fprint $TMP/FILES.last02.$$ \
-	-a         -mtime  -1 -fprint $TMP/FILES.last01.$$ \
-	-o -type d            -fprint $TMP/DIRECTORIES.all.$$ \
-	-a         -mtime -31 -fprint $TMP/DIRECTORIES.last31.$$ \
-	-a         -mtime -14 -fprint $TMP/DIRECTORIES.last14.$$ \
-	-a         -mtime  -7 -fprint $TMP/DIRECTORIES.last07.$$ \
-	-a         -mtime  -2 -fprint $TMP/DIRECTORIES.last02.$$ \
-	-a         -mtime  -1 -fprint $TMP/DIRECTORIES.last01.$$
+	-o -type f	   -fprint $TMP/FILES.all.$$ \
+	-a	-mtime -31 -fprint $TMP/FILES.last31.$$ \
+	-a 	-mtime -14 -fprint $TMP/FILES.last14.$$ \
+	-a	-mtime -7  -fprint $TMP/FILES.last07.$$ \
+	-a 	-mtime -2  -fprint $TMP/FILES.last02.$$ \
+	-a	-mtime -1  -fprint $TMP/FILES.last01.$$ \
+	-o -type d	   -fprint $TMP/DIRECTORIES.all.$$ \
+	-a 	-mtime -31 -fprint $TMP/DIRECTORIES.last31.$$ \
+	-a	-mtime -14 -fprint $TMP/DIRECTORIES.last14.$$ \
+	-a 	-mtime -7  -fprint $TMP/DIRECTORIES.last07.$$ \
+	-a 	-mtime -2  -fprint $TMP/DIRECTORIES.last02.$$ \
+	-a	-mtime -1  -fprint $TMP/DIRECTORIES.last01.$$ 
 
-for i in FILES.all FILES.last31 FILES.last14 FILES.last07 \
-	FILES.last02 FILES.last01 DIRECTORIES.all \
-	DIRECTORIES.last31 DIRECTORIES.last14 \
-	DIRECTORIES.last07
+for i in FILES.all FILES.last31 FILES.last14 FILES.last07 FILES.last02 FILES.last01 \
+	DIRECTORIES.all DIRECTORIES.last31 DIRECTORIES.last14 DIRECTORIES.last14 DIRECTORIES.last07
 do
-	sed -e "s=^[.]/=$WD/=" -e "s=^[.]$=$WD=" $TMP/$i.$$ |
+	sed -e "s=^[.]/=$WD/=" -e "s=$[.]$=$WD=" $TMP/$i.$$ |
 		LC_ALL=C sort > $TMP/$i.$$.tmp
-        cmp -s $TMP/$i.$$.tmp $i || mv $TMP/$i.$$.tmp $i
+		cmp -s $TMP/$i.$$.tmp $i || mv $TMP/$i.$$.tmp $i
 done
+
+
